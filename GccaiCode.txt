@@ -1,0 +1,368 @@
+package com.dialogflow.demo.controller;
+
+import java.util.Map;
+
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.dialogflow.demo.payload.QueryResult;
+import com.dialogflow.demo.payload.WebhookRequest;
+import com.dialogflow.demo.payload.WebhookResponse;
+
+
+
+@RestController
+public class WebhookController {
+	
+
+    @PostMapping("/webhook")
+    public WebhookResponse handleWebhookRequest(@RequestBody WebhookRequest request) {
+    	
+        // Process the incoming request and generate a response
+        String queryText = request.getQueryResult().getQueryText();
+        System.out.println("queryText>>>>>>>"+queryText);
+        
+        Map<String, Object> parameters = request.getQueryResult().getParameters();
+        
+        System.out.println("parameters>>>>>>>"+parameters);
+        
+        // Example of retrieving specific parameter values
+        String Name = (String) parameters.get("given-name");
+        String accountNumber = (String) parameters.get("number");
+    	
+    	System.out.println("parameterValue>>>>>>>"+Name);
+    	System.out.println("parameterValue>>>>>>>"+accountNumber);
+
+        WebhookResponse response = new WebhookResponse();
+        response.setFulfillmentText("Your account balance is $2000");
+        return response;
+
+    }
+	
+
+}
+
+package com.dialogflow.demo.payload;
+
+import java.util.Map;
+
+public class OriginalDetectIntentRequest {
+	
+	private String source;
+    private Map<String, Object> payload;
+
+    // Getters and setters
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public Map<String, Object> getPayload() {
+        return payload;
+    }
+
+    public void setPayload(Map<String, Object> payload) {
+        this.payload = payload;
+    }
+
+}
+
+
+package com.dialogflow.demo.payload;
+
+import java.util.Map;
+
+public class QueryResult {
+	
+	
+	private String queryText;
+    private Map<String, Object> parameters;
+
+    // Getters and setters
+
+    public String getQueryText() {
+        return queryText;
+    }
+
+    public void setQueryText(String queryText) {
+        this.queryText = queryText;
+    }
+
+    public Map<String, Object> getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(Map<String, Object> parameters) {
+        this.parameters = parameters;
+    }
+	
+
+}
+
+
+package com.dialogflow.demo.payload;
+
+import java.util.Map;
+
+public class WebhookRequest {
+	
+    private String responseId;
+    private QueryResult queryResult;
+    private OriginalDetectIntentRequest originalDetectIntentRequest;
+
+    // Getters and setters
+
+    public String getResponseId() {
+        return responseId;
+    }
+
+    public void setResponseId(String responseId) {
+        this.responseId = responseId;
+    }
+
+    public QueryResult getQueryResult() {
+        return queryResult;
+    }
+
+    public void setQueryResult(QueryResult queryResult) {
+        this.queryResult = queryResult;
+    }
+
+    public OriginalDetectIntentRequest getOriginalDetectIntentRequest() {
+        return originalDetectIntentRequest;
+    }
+
+    public void setOriginalDetectIntentRequest(OriginalDetectIntentRequest originalDetectIntentRequest) {
+        this.originalDetectIntentRequest = originalDetectIntentRequest;
+    }
+
+}
+
+
+
+package com.dialogflow.demo.payload;
+
+public class WebhookResponse {
+	
+	
+	private String fulfillmentText;
+    // You can include other fields such as fulfillmentMessages, outputContexts, etc.
+
+	
+    // Getters and setters
+
+    public String getFulfillmentText() {
+        return fulfillmentText;
+    }
+
+    public void setFulfillmentText(String fulfillmentText) {
+        this.fulfillmentText = fulfillmentText;
+    }
+
+}
+
+
+
+1-agents:- 
+***********************************************
+-- Table: public.agents
+
+-- DROP TABLE IF EXISTS public.agents;
+
+CREATE TABLE IF NOT EXISTS public.agents
+(
+    user_id integer,
+    space_id character varying(100) COLLATE pg_catalog."default",
+    status character varying(255) COLLATE pg_catalog."default",
+    state character varying(255) COLLATE pg_catalog."default",
+    max_no_answer integer NOT NULL DEFAULT 0,
+    wrap_up_time integer NOT NULL DEFAULT 0,
+    reject_delay_time integer NOT NULL DEFAULT 0,
+    busy_delay_time integer NOT NULL DEFAULT 0,
+    no_answer_delay_time integer NOT NULL DEFAULT 0,
+    last_bridge_start integer NOT NULL DEFAULT 0,
+    last_bridge_end integer NOT NULL DEFAULT 0,
+    last_offered_call integer NOT NULL DEFAULT 0,
+    last_status_change integer NOT NULL DEFAULT 0,
+    no_answer_count integer NOT NULL DEFAULT 0,
+    calls_answered integer NOT NULL DEFAULT 0,
+    talk_time integer NOT NULL DEFAULT 0,
+    ready_time integer NOT NULL DEFAULT 0,
+    external_calls_count integer NOT NULL DEFAULT 0
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.agents
+    OWNER to postgres;
+*****************************************************
+
+
+2-calls:-
+************************************************
+-- Table: public.calls
+
+-- DROP TABLE IF EXISTS public.calls;
+
+CREATE TABLE IF NOT EXISTS public.calls
+(
+    uuid text COLLATE pg_catalog."default",
+    start_time timestamp without time zone,
+    skill_joined timestamp without time zone,
+    skill_id character varying(100) COLLATE pg_catalog."default",
+    agent_id integer,
+    space_id character varying(100) COLLATE pg_catalog."default"
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.calls
+    OWNER to postgres;
+*************************************************************
+
+3-cdr:-
+**********************************************************
+-- Table: public.cdr
+
+-- DROP TABLE IF EXISTS public.cdr;
+
+CREATE TABLE IF NOT EXISTS public.cdr
+(
+    ref_id integer NOT NULL DEFAULT nextval('cdr_ref_id_seq'::regclass),
+    uuid uuid DEFAULT gen_random_uuid(),
+    customer_name character varying(100) COLLATE pg_catalog."default",
+    customer_email character varying(255) COLLATE pg_catalog."default",
+    customer_phone character varying(100) COLLATE pg_catalog."default",
+    customer_skillset_id character varying(100) COLLATE pg_catalog."default",
+    customer_skillset_name character varying(100) COLLATE pg_catalog."default",
+    start_time timestamp without time zone,
+    skill_joined timestamp without time zone,
+    answered timestamp without time zone,
+    end_time timestamp without time zone,
+    agent_id integer,
+    agent_space_id character varying(100) COLLATE pg_catalog."default",
+    meeting_id character varying(100) COLLATE pg_catalog."default",
+    CONSTRAINT cdr_pkey PRIMARY KEY (ref_id),
+    CONSTRAINT cdr_uuid_key UNIQUE (uuid)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.cdr
+    OWNER to postgres;
+	
+***********************************************************
+
+
+4-config_skillset:-
+*******************************************************
+-- Table: public.config_skillset
+
+-- DROP TABLE IF EXISTS public.config_skillset;
+
+CREATE TABLE IF NOT EXISTS public.config_skillset
+(
+    skill_id integer NOT NULL DEFAULT nextval('skillset_skill_id_seq'::regclass),
+    skill_name character varying(100) COLLATE pg_catalog."default",
+    created_date timestamp without time zone,
+    created_by character varying(100) COLLATE pg_catalog."default",
+    status character varying(10) COLLATE pg_catalog."default",
+    CONSTRAINT skillset_pkey PRIMARY KEY (skill_id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.config_skillset
+    OWNER to postgres;
+	
+*****************************************************
+
+
+5-user_agent_state:-
+**************************************
+-- Table: public.user_agent_state
+
+-- DROP TABLE IF EXISTS public.user_agent_state;
+
+CREATE TABLE IF NOT EXISTS public.user_agent_state
+(
+    reference_id integer NOT NULL DEFAULT nextval('user_agent_state_reference_id_seq'::regclass),
+    user_id integer,
+    user_status character varying(20) COLLATE pg_catalog."default",
+    not_ready_reason character varying(50) COLLATE pg_catalog."default",
+    event_time timestamp without time zone,
+    state_changed_time timestamp without time zone,
+    state_duration time without time zone,
+    remarks character varying(50) COLLATE pg_catalog."default",
+    CONSTRAINT user_agent_state_userid_fkey FOREIGN KEY (user_id)
+        REFERENCES public.user_details (user_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.user_agent_state
+    OWNER to postgres;
+	
+****************************************************************
+
+
+6-user_details:-
+*********************************
+-- Table: public.user_details
+
+-- DROP TABLE IF EXISTS public.user_details;
+
+CREATE TABLE IF NOT EXISTS public.user_details
+(
+    user_id integer NOT NULL DEFAULT nextval('user_details_user_id_seq'::regclass),
+    space_id character varying(100) COLLATE pg_catalog."default",
+    diaplay_name character varying(100) COLLATE pg_catalog."default",
+    first_name character varying(100) COLLATE pg_catalog."default",
+    last_name character varying(100) COLLATE pg_catalog."default",
+    email_id character varying(100) COLLATE pg_catalog."default",
+    phone_no character varying(100) COLLATE pg_catalog."default",
+    role character varying(10) COLLATE pg_catalog."default",
+    status character varying(10) COLLATE pg_catalog."default",
+    created_date timestamp without time zone,
+    created_by character varying(100) COLLATE pg_catalog."default",
+    CONSTRAINT user_details_pkey PRIMARY KEY (user_id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.user_details
+    OWNER to postgres;
+	
+********************************************
+
+
+7-user-skillset:-
+********************************************
+-- Table: public.user_skillset
+
+-- DROP TABLE IF EXISTS public.user_skillset;
+
+CREATE TABLE IF NOT EXISTS public.user_skillset
+(
+    user_id integer,
+    space_id character varying(100) COLLATE pg_catalog."default",
+    skill_id integer,
+    skill_name character varying(100) COLLATE pg_catalog."default"
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.user_skillset
+    OWNER to postgres;
+
+
+
+
+

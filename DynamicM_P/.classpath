@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="C:/Users/Admin/Downloads/log4j-core.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Admin/Downloads/log4j.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Admin/Downloads/jaxb-api-2.2.jar/jaxb-api-2.2.jar"/>
+	<classpathentry kind="lib" path="C:/Cisco/CallStudio/eclipse/plugins/com.audiumcorp.studio.debug.runtime/AUDIUM_HOME/lib/AudiumXML1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Cisco/CallStudio/eclipse/plugins/com.audiumcorp.studio.debug.runtime/AUDIUM_HOME/lib/framework.jar"/>
+	<classpathentry kind="lib" path="C:/Cisco/CallStudio/eclipse/plugins/com.audiumcorp.studio.debug.runtime/AUDIUM_HOME/lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Admin/Downloads/jar_files/jackson-annotations-2.12.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Admin/Downloads/jar_files/jackson-core-2.12.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Admin/Downloads/jar_files/jackson-databind-2.12.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Admin/Downloads/jar_files/jackson-dataformat-xml-2.12.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Admin/Downloads/jar_files/jackson-module-jaxb-annotations-2.12.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Admin/Downloads/jar_files/jakarta.activation-api-1.2.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Admin/Downloads/jar_files/jakarta.xml.bind-api-2.3.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Admin/Downloads/jar_files/stax2-api-4.2.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Admin/Downloads/jar_files/woodstox-core-6.2.4.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

@@ -1,0 +1,41 @@
+# Define the root logger with appender file
+log4j.rootLogger=ALL
+
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=%d  - %m%n
+log4j.appender.stdout.maxBackupIndex=0
+
+log4j.category.stdout=ALL, stdout
+log4j.additivity.stdout=false
+
+
+#log details for controller
+log4j.appender.init_log=org.apache.log4j.rolling.RollingFileAppender
+log4j.appender.init_log.RollingPolicy=org.apache.log4j.rolling.TimeBasedRollingPolicy
+log4j.appender.init_log.RollingPolicy.FileNamePattern=E:/ET/ApplicationLogs/ApiLogs/init_log%d{yyyy-MM-dd}.log
+log4j.appender.init_log.layout=org.apache.log4j.PatternLayout
+log4j.appender.init_log.layout.ConversionPattern=%d{HH:mm:ss SSS} \t%p  \t\t%m%n
+
+log4j.category.init_log=DEBUG, init_log
+log4j.additivity.init_log=false
+
+
+
+
+#log details for controller
+log4j.appender.ApiServiceController_log=org.apache.log4j.rolling.RollingFileAppender
+log4j.appender.ApiServiceController_log.RollingPolicy=org.apache.log4j.rolling.TimeBasedRollingPolicy
+log4j.appender.ApiServiceController_log.RollingPolicy.FileNamePattern=E:/ET/ApplicationLogs/ApiLogs/ApiServiceController_log_%d{yyyy-MM-dd}.log
+log4j.appender.ApiServiceController_log.maxBackupIndex=0
+
+log4j.appender.ApiServiceController_log.layout=org.apache.log4j.PatternLayout
+log4j.appender.ApiServiceController_log.layout.ConversionPattern=%d{HH:mm:ss SSS} \t%p  \t\t%m%n
+
+log4j.category.ApiServiceController_log=DEBUG, ApiServiceController_log
+log4j.additivity.ApiServiceController_log=false
+
+
+
+
+
